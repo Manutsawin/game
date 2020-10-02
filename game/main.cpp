@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include<windows.h>
+#include<stdio.h>
 
 float x_player=750, y_player=500;
 struct data
@@ -15,20 +16,21 @@ sf::Texture playerTexture;
 sf::IntRect rectSourceplayer(35, 0, 80, 60);
 sf::Clock cloc;
 
-void stay();
-void run();
+int Stay(int);
+int Right(int);
+int Left(int);
 
 int main()
 {
 	
 	//player.setFillColor(sf::Color::Cyan);
 	
-	
-	playerTexture.loadFromFile("Textures/11.png");
+	//charector
+	playerTexture.loadFromFile("Textures/12.png");
 	player.setTexture(&playerTexture);
 	player.setTextureRect(rectSourceplayer);
 	
-	int put=0;
+	int direct_player=1;
 	
 
 
@@ -53,18 +55,13 @@ int main()
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 		{
-			player1.x+= -0.1f;
+			direct_player =Left(direct_player);
+			
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 		{
+			direct_player = Right(direct_player);
 			
-			if (put == 0)
-			{
-				rectSourceplayer.left = 563;
-			}
-			put = 1;
-			run();
-			player1.x += 0.2f;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
 		{
@@ -77,26 +74,33 @@ int main()
 		}
 		else
 		{
-			if (put == 1)
-			{
-				rectSourceplayer.left = 35;
-				put = 0;
-			}
-			stay();
+			
+			direct_player =Stay(direct_player);
 
 		}
-		
-		player.setPosition(player1.x, player1.y);
 		window.clear();
+		player.setPosition(player1.x, player1.y);
 		window.draw(player);
 		window.display();
 	}
 	
 	return 0;
 }
-void stay()
+int Stay(int direct)
 {
-	
+	if (direct == 1 || direct == 2)
+	{
+		rectSourceplayer.left = 35;
+		if (direct == 1)
+		{
+			direct = 11;
+		}
+		else
+		{
+			direct = 22;
+		}
+
+	}
 	if (cloc.getElapsedTime().asSeconds() > 0.150f)
 	{
 		if (rectSourceplayer.left == 431)
@@ -112,14 +116,28 @@ void stay()
 		
 
 	}
-	
+	return direct;
 
 }
 
-void run()
+int Right(int direct)
 {
+	if (direct == 11)
+	{
+		rectSourceplayer.left = 563;
+	}
 
-	if (cloc.getElapsedTime().asSeconds() > 0.150f)
+	if (direct != 1 && direct != 11)
+	{
+		player1.x -= 160;
+		player.setScale({ 1, 1 });
+		rectSourceplayer.left = 563;
+
+	}
+	direct = 1;
+	player1.x += 0.5f;
+	
+	if (cloc.getElapsedTime().asSeconds() > 0.100f)
 	{
 		if (rectSourceplayer.left == 1091)
 		{
@@ -135,5 +153,43 @@ void run()
 
 	}
 
+	return direct;
+}
 
+int Left(int direct)
+{
+	
+	
+	if (direct == 22)
+	{
+		rectSourceplayer.left = 563;
+	}
+
+	if (direct != 2 && direct != 22)
+	{
+		player1.x += 160;
+		player.setScale({ -1, 1 });
+		rectSourceplayer.left = 563;
+	}
+	direct = 2;
+	player1.x += -0.5f;
+	if (cloc.getElapsedTime().asSeconds() > 0.100f)
+	{
+		if (rectSourceplayer.left == 1091)
+		{
+			rectSourceplayer.left = 563;
+
+		}
+		else
+		{
+			rectSourceplayer.left += 132;
+		}
+		
+		player.setTextureRect(rectSourceplayer);
+		cloc.restart();
+
+
+	}
+
+	return direct;
 }
