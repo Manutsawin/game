@@ -19,23 +19,24 @@ sf::Texture playerTexture;
 sf::IntRect rectSourceplayer(35, 0, 80, 60);
 sf::Clock cloc;
 
-
+//ichigoz
 int Stay(int);
 int Right(int);
 int Left(int);
 int Jump(int);
+void PG();
 
 int main()
 {
 	
 	//player.setFillColor(sf::Color::Cyan);
 	
-	//charector
+	//charector ichigoz
 	playerTexture.loadFromFile("Textures/12.png");
 	player.setTexture(&playerTexture);
 	player.setTextureRect(rectSourceplayer);
 	
-	int direct_player=1,directjump=0;
+	int direct_player=1,directjump=0,directPG=0;
 	
 
 	
@@ -77,12 +78,23 @@ int main()
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 		{
 			
+			PG();
+			directPG = 1;
+			
 		}
 		else
 		{
+			if (directPG ==1)
+			{
+				rectSourceplayer.left = 35;
+				directPG = 0;
+			}
+			rectSourceplayer.top = 0;
 			direct_player =Stay(direct_player);
 
 		}
+		
+		
 		
 		directjump = Jump(directjump);
 		
@@ -225,4 +237,11 @@ int Jump(int directjump)
 
 	}
 	return directjump;
+}
+
+void PG()
+{
+	rectSourceplayer.top = 100;
+	rectSourceplayer.left = 695;
+	
 }
