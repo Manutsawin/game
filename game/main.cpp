@@ -3,9 +3,12 @@
 #include<stdio.h>
 
 float x_player=750, y_player=500;
+
+float jump = 1.5;
+
 struct data
 {
-	float x= 0, y= 480;
+	float x= 0, y= 530;
 
 } player1;
 
@@ -16,9 +19,11 @@ sf::Texture playerTexture;
 sf::IntRect rectSourceplayer(35, 0, 80, 60);
 sf::Clock cloc;
 
+
 int Stay(int);
 int Right(int);
 int Left(int);
+int Jump(int);
 
 int main()
 {
@@ -30,7 +35,9 @@ int main()
 	player.setTexture(&playerTexture);
 	player.setTextureRect(rectSourceplayer);
 	
-	int direct_player=1;
+	int direct_player=1,directjump=0;
+	
+
 	
 
 
@@ -65,19 +72,21 @@ int main()
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
 		{
-			player1.y+= -0.1f;
-			
+			directjump = 1;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 		{
-			player1.y+= 0.1f;
+			
 		}
 		else
 		{
-			
 			direct_player =Stay(direct_player);
 
 		}
+		
+		directjump = Jump(directjump);
+		
+
 		window.clear();
 		player.setPosition(player1.x, player1.y);
 		window.draw(player);
@@ -192,4 +201,25 @@ int Left(int direct)
 	}
 
 	return direct;
+}
+int Jump(int directjump)
+{
+	if (directjump == 1)
+	{
+
+
+		player1.y -= jump;
+		if (player1.y < 390)
+		{
+			jump = jump * -1;
+		}
+		else if (player1.y >= 530 && jump < 0)
+		{
+			directjump = 0;
+			jump = jump * -1;
+			player1.y = 530;
+		}
+
+	}
+	return directjump;
 }
