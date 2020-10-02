@@ -204,9 +204,11 @@ int Left(int direct)
 }
 int Jump(int directjump)
 {
+	
 	if (directjump == 1)
 	{
-
+		rectSourceplayer.top = 200;
+		rectSourceplayer.left = 35;
 
 		player1.y -= jump;
 		if (player1.y < 390)
@@ -218,6 +220,7 @@ int Jump(int directjump)
 			directjump = 0;
 			jump = jump * -1;
 			player1.y = 530;
+			rectSourceplayer.top = 0;
 		}
 
 	}
