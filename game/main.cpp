@@ -2,46 +2,49 @@
 #include<windows.h>
 #include<stdio.h>
 
-float x_player=750, y_player=500;
-
-float jump = 1.5;
-
-struct data
+struct charecter
 {
 	float x= 0, y= 530;
-
+	float jump = 1.5;//speed of jump
+	sf::Texture Texture;
+	sf::IntRect rectSourceplayer;
+	
+	
 } player1;
 
 sf::RenderWindow window(sf::VideoMode(1200, 800), "Road to champions");
 
-sf::RectangleShape player(sf::Vector2f(160.0f, 120.0f));
-sf::Texture playerTexture;
-sf::IntRect rectSourceplayer(35, 0, 80, 60);
+sf::RectangleShape sprite_player1(sf::Vector2f(160.0f, 120.0f));
+
+
+
+
 sf::Clock cloc;
 
 //ichigoz
-int Stay(int);
-int Right(int);
-int Left(int);
-int Jump(int);
-void PG();
+int Stay_ichigoz(int);
+int Right_ichigoz(int);
+int Left_ichigoz(int);
+int Jump_ichigoz(int);
+void PG_ichigoz();
+int flash_ichigoz(int);
 
 int main()
 {
-	
+	player1.rectSourceplayer.top = 0;
+	player1.rectSourceplayer.left = 35;
+	player1.rectSourceplayer.width = 80;
+	player1.rectSourceplayer.height = 60;
+
 	//player.setFillColor(sf::Color::Cyan);
 	
 	//charector ichigoz
-	playerTexture.loadFromFile("Textures/12.png");
-	player.setTexture(&playerTexture);
-	player.setTextureRect(rectSourceplayer);
+	player1.Texture.loadFromFile("Textures/11.png");
+	sprite_player1.setTexture(&player1.Texture);
+	sprite_player1.setTextureRect(player1.rectSourceplayer);
 	
 	int direct_player=1,directjump=0,directPG=0;
 	
-
-	
-
-
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -59,26 +62,26 @@ int main()
 		}
 		
 		
-		player.setTextureRect(rectSourceplayer);
+		sprite_player1.setTextureRect(player1.rectSourceplayer);
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 		{
-			direct_player =Left(direct_player);
+			direct_player =Left_ichigoz(direct_player);
 			
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 		{
-			direct_player = Right(direct_player);
+			direct_player = Right_ichigoz(direct_player);
 			
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::K))
 		{
 			directjump = 1;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 		{
 			
-			PG();
+			PG_ichigoz();
 			directPG = 1;
 			
 		}
@@ -86,32 +89,32 @@ int main()
 		{
 			if (directPG ==1)
 			{
-				rectSourceplayer.left = 35;
+				player1.rectSourceplayer.left = 35;
 				directPG = 0;
 			}
-			rectSourceplayer.top = 0;
-			direct_player =Stay(direct_player);
+			player1.rectSourceplayer.top = 0;
+			direct_player =Stay_ichigoz(direct_player);
 
 		}
 		
 		
 		
-		directjump = Jump(directjump);
+		directjump = Jump_ichigoz(directjump);
 		
 
 		window.clear();
-		player.setPosition(player1.x, player1.y);
-		window.draw(player);
+		sprite_player1.setPosition(player1.x, player1.y);
+		window.draw(sprite_player1);
 		window.display();
 	}
 	
 	return 0;
 }
-int Stay(int direct)
+int Stay_ichigoz(int direct)
 {
 	if (direct == 1 || direct == 2)
 	{
-		rectSourceplayer.left = 35;
+		player1.rectSourceplayer.left = 35;
 		if (direct == 1)
 		{
 			direct = 11;
@@ -124,15 +127,15 @@ int Stay(int direct)
 	}
 	if (cloc.getElapsedTime().asSeconds() > 0.150f)
 	{
-		if (rectSourceplayer.left == 431)
+		if (player1.rectSourceplayer.left == 431)
 		{
-			rectSourceplayer.left = 35;
+			player1.rectSourceplayer.left = 35;
 		}
 		else
 		{
-			rectSourceplayer.left += 132;
+			player1.rectSourceplayer.left += 132;
 		}
-		player.setTextureRect(rectSourceplayer);
+		sprite_player1.setTextureRect(player1.rectSourceplayer);
 		cloc.restart();
 		
 
@@ -141,18 +144,18 @@ int Stay(int direct)
 
 }
 
-int Right(int direct)
+int Right_ichigoz(int direct)
 {
 	if (direct == 11)
 	{
-		rectSourceplayer.left = 563;
+		player1.rectSourceplayer.left = 563;
 	}
 
 	if (direct != 1 && direct != 11)
 	{
 		player1.x -= 160;
-		player.setScale({ 1, 1 });
-		rectSourceplayer.left = 563;
+		sprite_player1.setScale({ 1, 1 });
+		player1.rectSourceplayer.left = 563;
 
 	}
 	direct = 1;
@@ -160,15 +163,15 @@ int Right(int direct)
 	
 	if (cloc.getElapsedTime().asSeconds() > 0.100f)
 	{
-		if (rectSourceplayer.left == 1091)
+		if (player1.rectSourceplayer.left == 1091)
 		{
-			rectSourceplayer.left = 563;
+			player1.rectSourceplayer.left = 563;
 		}
 		else
 		{
-			rectSourceplayer.left += 132;
+			player1.rectSourceplayer.left += 132;
 		}
-		player.setTextureRect(rectSourceplayer);
+		sprite_player1.setTextureRect(player1.rectSourceplayer);
 		cloc.restart();
 
 
@@ -177,36 +180,36 @@ int Right(int direct)
 	return direct;
 }
 
-int Left(int direct)
+int Left_ichigoz(int direct)
 {
 	
 	
 	if (direct == 22)
 	{
-		rectSourceplayer.left = 563;
+		player1.rectSourceplayer.left = 563;
 	}
 
 	if (direct != 2 && direct != 22)
 	{
 		player1.x += 160;
-		player.setScale({ -1, 1 });
-		rectSourceplayer.left = 563;
+		sprite_player1.setScale({ -1, 1 });
+		player1.rectSourceplayer.left = 563;
 	}
 	direct = 2;
 	player1.x += -0.5f;
 	if (cloc.getElapsedTime().asSeconds() > 0.100f)
 	{
-		if (rectSourceplayer.left == 1091)
+		if (player1.rectSourceplayer.left == 1091)
 		{
-			rectSourceplayer.left = 563;
+			player1.rectSourceplayer.left = 563;
 
 		}
 		else
 		{
-			rectSourceplayer.left += 132;
+			player1.rectSourceplayer.left += 132;
 		}
 		
-		player.setTextureRect(rectSourceplayer);
+		sprite_player1.setTextureRect(player1.rectSourceplayer);
 		cloc.restart();
 
 
@@ -214,34 +217,39 @@ int Left(int direct)
 
 	return direct;
 }
-int Jump(int directjump)
+int Jump_ichigoz(int directjump)
 {
 	
 	if (directjump == 1)
 	{
-		rectSourceplayer.top = 200;
-		rectSourceplayer.left = 35;
+		player1.rectSourceplayer.top = 200;
+		player1.rectSourceplayer.left = 35;
 
-		player1.y -= jump;
+		player1.y -= player1.jump;
 		if (player1.y < 390)
 		{
-			jump = jump * -1;
+			player1.jump = player1.jump * -1;
 		}
-		else if (player1.y >= 530 && jump < 0)
+		else if (player1.y >= 530 && player1.jump < 0)
 		{
 			directjump = 0;
-			jump = jump * -1;
+			player1.jump = player1.jump * -1;
 			player1.y = 530;
-			rectSourceplayer.top = 0;
+			player1.rectSourceplayer.top = 0;
 		}
 
 	}
 	return directjump;
 }
 
-void PG()
+void PG_ichigoz()
 {
-	rectSourceplayer.top = 100;
-	rectSourceplayer.left = 695;
+	player1.rectSourceplayer.top = 100;
+	player1.rectSourceplayer.left = 695;
 	
+}
+
+int flash_ichigoz(int direct)
+{
+	return 0;
 }
