@@ -8,36 +8,31 @@ struct charecter
 	float jump = 1.1;//speed of jump
 	sf::Texture Texture;
 	sf::IntRect rectSourceplayer;
-
+	
+	
 } player1;
 
 sf::RenderWindow window(sf::VideoMode(1200, 800), "Road to champions");
 sf::RectangleShape sprite_player1(sf::Vector2f(160.0f, 120.0f));
+
 sf::Clock cloc, clockJ;
 
 //ichigoz
-int Stay_Fuc(int);
-int move_Right_Fuc(int);
-int move_Left_Fuc(int);
-int Jump_Fuc(int);
-void PG_Fuc();
-int Flash_Fuc(int);
-int J_attack(int);
+int Stay_ichigoz(int);
+int Right_ichigoz(int);
+int Left_ichigoz(int);
+int Jump_ichigoz(int);
+void PG_ichigoz();
+int flash_ichigoz(int);
+int J_ichigoz(int);
 void statement();
 
-struct Vector
-{
-	int direct = 0;
-} player , jump , PG , J;
-
-
+int direct_player = 1, directjump = 0, directPG = 0, directJ = 0;
 
 
 
 int main()
 {
-	player.direct = 1;
-
 	player1.rectSourceplayer.top = 0;
 	player1.rectSourceplayer.left = 35;
 	player1.rectSourceplayer.width = 80;
@@ -45,8 +40,8 @@ int main()
 
 	//player.setFillColor(sf::Color::Cyan);
 
-	
-	player1.Texture.loadFromFile("Textures/naruto.png");
+	//charector ichigoz
+	player1.Texture.loadFromFile("Textures/12.png");
 	sprite_player1.setTexture(&player1.Texture);
 	sprite_player1.setTextureRect(player1.rectSourceplayer);
 	
@@ -61,8 +56,7 @@ int main()
 			}
 			if (event.type == sf::Event::TextEntered)
 			{
-				printf("%c\n", event.text.unicode);
-				printf("x= %f  y=%f\n", player1.x, player1.y);
+				printf("%c", event.text.unicode);
 			}
 				
 		}
@@ -81,84 +75,82 @@ void statement()
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 	{
-	
-		if (J.direct != 1&& PG.direct != 1)
+		if (directJ != 1)
 		{
-			player.direct = move_Left_Fuc(player.direct);
+			direct_player = Left_ichigoz(direct_player);
 		}
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 	{
-		if (J.direct != 1&& PG.direct != 1)
+		if (directJ != 1)
 		{
-			player.direct = move_Right_Fuc(player.direct);
+			direct_player = Right_ichigoz(direct_player);
 		}
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::K))
 	{
-		if (J.direct != 1&& PG.direct != 1)
+		if (directJ != 1)
 		{
-			jump.direct = 1;
+			directjump = 1;
 		}
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::L))
 	{
-		if (J.direct != 1&& jump.direct != 1&& PG.direct != 1)
+		if (directJ != 1&& directjump != 1)
 		{
-			player.direct = Flash_Fuc(player.direct);
+			direct_player = flash_ichigoz(direct_player);
 		}
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J))
 	{
-		if (J.direct == 0 && jump.direct != 1 && PG.direct != 1)
+		if (directJ == 0)
 		{
-			player.direct = Stay_Fuc(player.direct);
-			J.direct = 1;
+			directJ = 1;
 			clockJ.restart();
 		}
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 	{
-		PG_Fuc();
-		PG.direct = 1;
+		PG_ichigoz();
+		directPG = 1;
 	}
-	else if (J.direct != 1)
+	else if (directJ != 1)
 	{
-		if (PG.direct == 1)
+		if (directPG == 1)
 		{
-			player1.rectSourceplayer.left = 35; // left default
-			PG.direct = 0;
+			player1.rectSourceplayer.left = 35; //position left default
+			directPG = 0;
 		}
-		player1.rectSourceplayer.top = 0; // top default
-		player.direct = Stay_Fuc(player.direct);
+		player1.rectSourceplayer.top = 0; //position top default
+		direct_player = Stay_ichigoz(direct_player);
 	}
-	
 
 
 
-	if (J.direct == 1)
+
+	if (directJ == 1)
 	{
 		if (clockJ.getElapsedTime().asSeconds() > 0.65f)
 		{
-			J.direct = 0;
+			directJ = 0;
 			clockJ.restart();
-			player1.rectSourceplayer.top = 0;  // top default
-			player.direct = Stay_Fuc(player.direct);
+			player1.rectSourceplayer.top = 0; //position top default
+			direct_player = Stay_ichigoz(direct_player);
 		}
 		else
 		{
-			player.direct = J_attack(player.direct);
+			direct_player = J_ichigoz(direct_player);
 		}
 
 	}
-	jump.direct = Jump_Fuc(jump.direct);
+	directjump = Jump_ichigoz(directjump);
 
 }
-int Stay_Fuc(int direct)
+int Stay_ichigoz(int direct)
 {
 	if (direct == 1 || direct == 2)
 	{
-		player1.rectSourceplayer.left = 35; //left default left 
+		player1.rectSourceplayer.left = 35;
 		if (direct == 1)
 		{
 			direct = 11;
@@ -171,13 +163,13 @@ int Stay_Fuc(int direct)
 	}
 	if (cloc.getElapsedTime().asSeconds() > 0.150f)
 	{
-		if (player1.rectSourceplayer.left == 431) //stay max left 
+		if (player1.rectSourceplayer.left == 431)
 		{
-			player1.rectSourceplayer.left = 35; //stay default left 
+			player1.rectSourceplayer.left = 35;
 		}
 		else
 		{
-			player1.rectSourceplayer.left += 132; //plus left 
+			player1.rectSourceplayer.left += 132;
 		}
 		sprite_player1.setTextureRect(player1.rectSourceplayer);
 		cloc.restart();
@@ -188,19 +180,19 @@ int Stay_Fuc(int direct)
 
 }
 
-int move_Right_Fuc(int direct)
+int Right_ichigoz(int direct)
 {
 	
 	if (direct == 11)
 	{
-		player1.rectSourceplayer.left = 563; //move left,right default left 
+		player1.rectSourceplayer.left = 563;
 	}
 
 	if (direct != 1 && direct != 11)
 	{
 		player1.x -= 160;
 		sprite_player1.setScale({ 1, 1 });
-		player1.rectSourceplayer.left = 563; //move left,right default left 
+		player1.rectSourceplayer.left = 563;
 
 	}
 	direct = 1;
@@ -211,13 +203,13 @@ int move_Right_Fuc(int direct)
 
 	if (cloc.getElapsedTime().asSeconds() > 0.100f)
 	{
-		if (player1.rectSourceplayer.left == 1091) //move left,right max left 
+		if (player1.rectSourceplayer.left == 1091)
 		{
-			player1.rectSourceplayer.left = 563; //move left,right default left 
+			player1.rectSourceplayer.left = 563;
 		}
 		else
 		{
-			player1.rectSourceplayer.left += 132; //plus left 
+			player1.rectSourceplayer.left += 132;
 		}
 		sprite_player1.setTextureRect(player1.rectSourceplayer);
 		cloc.restart();
@@ -228,20 +220,20 @@ int move_Right_Fuc(int direct)
 	return direct;
 }
 
-int move_Left_Fuc(int direct)
+int Left_ichigoz(int direct)
 {
 	
 	
 	if (direct == 22)
 	{
-		player1.rectSourceplayer.left = 563; //move left,right default left 
+		player1.rectSourceplayer.left = 563;
 	}
 
 	if (direct != 2 && direct != 22)
 	{
 		player1.x += 160;
 		sprite_player1.setScale({ -1, 1 });
-		player1.rectSourceplayer.left = 563; //move left,right default left 
+		player1.rectSourceplayer.left = 563;
 	}
 	direct = 2;
 	if (player1.x >= 160)
@@ -251,14 +243,14 @@ int move_Left_Fuc(int direct)
 	
 	if (cloc.getElapsedTime().asSeconds() > 0.100f)
 	{
-		if (player1.rectSourceplayer.left == 1091) //move left,right max left 
+		if (player1.rectSourceplayer.left == 1091)
 		{
-			player1.rectSourceplayer.left = 563; //move left,right default left 
+			player1.rectSourceplayer.left = 563;
 
 		}
 		else
 		{
-			player1.rectSourceplayer.left += 132; //plus
+			player1.rectSourceplayer.left += 132;
 		}
 		
 		sprite_player1.setTextureRect(player1.rectSourceplayer);
@@ -269,13 +261,13 @@ int move_Left_Fuc(int direct)
 
 	return direct;
 }
-int Jump_Fuc(int directjump)
+int Jump_ichigoz(int directjump)
 {
 	
 	if (directjump == 1)
 	{
-		player1.rectSourceplayer.top = 200; 
-		player1.rectSourceplayer.left = 35; //jump defualt left 
+		player1.rectSourceplayer.top = 200;
+		player1.rectSourceplayer.left = 35;
 
 		player1.y -= player1.jump;
 		if (player1.y < 390)
@@ -287,34 +279,34 @@ int Jump_Fuc(int directjump)
 			directjump = 0;
 			player1.jump = player1.jump * -1;
 			player1.y = 530;
-			player1.rectSourceplayer.top = 0; // top defualt 
+			player1.rectSourceplayer.top = 0;
 		}
 
 	}
 	return directjump;
 }
 
-void PG_Fuc()
+void PG_ichigoz()
 {
-	player1.rectSourceplayer.top = 100; //PG top
-	player1.rectSourceplayer.left = 695;//PG left
+	player1.rectSourceplayer.top = 100;
+	player1.rectSourceplayer.left = 695;
 	
 }
 
-int Flash_Fuc(int direct)
+int flash_ichigoz(int direct)
 {
 	if (direct == 1 || direct == 11)
 	{
 		if (direct == 11)
 		{
-			player1.rectSourceplayer.left = 563; //move left,right default left
+			player1.rectSourceplayer.left = 563;
 		}
 
 		if (direct != 1 && direct != 11)
 		{
 			player1.x -= 160;
 			sprite_player1.setScale({ 1, 1 });
-			player1.rectSourceplayer.left = 563; //move left,right default left
+			player1.rectSourceplayer.left = 563;
 
 		}
 		direct = 1;
@@ -326,13 +318,13 @@ int Flash_Fuc(int direct)
 
 		if (cloc.getElapsedTime().asSeconds() > 0.100f)
 		{
-			if (player1.rectSourceplayer.left == 1091) //move left,right  max left
+			if (player1.rectSourceplayer.left == 1091)
 			{
-				player1.rectSourceplayer.left = 563; //move left,right default left
+				player1.rectSourceplayer.left = 563;
 			}
 			else
 			{
-				player1.rectSourceplayer.left += 132; // plus left 
+				player1.rectSourceplayer.left += 132;
 			}
 			sprite_player1.setTextureRect(player1.rectSourceplayer);
 			cloc.restart();
@@ -348,14 +340,14 @@ int Flash_Fuc(int direct)
 
 		if (direct == 22)
 		{
-			player1.rectSourceplayer.left = 563; //move left,right default left
+			player1.rectSourceplayer.left = 563;
 		}
 
 		if (direct != 2 && direct != 22)
 		{
 			player1.x += 160;
 			sprite_player1.setScale({ -1, 1 });
-			player1.rectSourceplayer.left = 563; //move left,right default left
+			player1.rectSourceplayer.left = 563;
 		}
 		direct = 2;
 		if (player1.x >= 160)
@@ -364,14 +356,14 @@ int Flash_Fuc(int direct)
 		}
 		if (cloc.getElapsedTime().asSeconds() > 0.100f)
 		{
-			if (player1.rectSourceplayer.left == 1091) //move left,right max left
+			if (player1.rectSourceplayer.left == 1091)
 			{
-				player1.rectSourceplayer.left = 563; //move left,right default left
+				player1.rectSourceplayer.left = 563;
 
 			}
 			else
 			{
-				player1.rectSourceplayer.left += 132; //plus left
+				player1.rectSourceplayer.left += 132;
 			}
 
 			sprite_player1.setTextureRect(player1.rectSourceplayer);
@@ -384,20 +376,20 @@ int Flash_Fuc(int direct)
 	}
 	
 }
-int J_attack(int direct)
+int J_ichigoz(int direct)
 {
 	if (direct == 1 || direct == 11)
 	{
 		if (direct == 11)
 		{
-			player1.rectSourceplayer.left = 563; //attack  default left
-			player1.rectSourceplayer.top = 950; //attack  default top
+			player1.rectSourceplayer.left = 563;
+			player1.rectSourceplayer.top = 950;
 		}
 		if (direct != 1 && direct != 11)
 		{
 			player1.x -= 160;
 			sprite_player1.setScale({ 1, 1 });
-			player1.rectSourceplayer.left = 563; //attack  default left
+			player1.rectSourceplayer.left = 563;
 		}
 		if (player1.x < 1040)
 		{
@@ -406,13 +398,13 @@ int J_attack(int direct)
 		direct = 1;
 		if (cloc.getElapsedTime().asSeconds() > 0.120f)
 		{
-			if (player1.rectSourceplayer.left == 1223) //attack  max left
+			if (player1.rectSourceplayer.left == 1223)
 			{
-				player1.rectSourceplayer.left = 563; //attack  default left
+				player1.rectSourceplayer.left = 563;
 			}
 			else
 			{
-				player1.rectSourceplayer.left += 132; // plus left
+				player1.rectSourceplayer.left += 132;
 			}
 			sprite_player1.setTextureRect(player1.rectSourceplayer);
 			cloc.restart();
@@ -424,14 +416,14 @@ int J_attack(int direct)
 	{
 		if (direct == 22)
 		{
-			player1.rectSourceplayer.left = 563; //attack  default left
-			player1.rectSourceplayer.top = 950; //attack  default top
+			player1.rectSourceplayer.left = 563;
+			player1.rectSourceplayer.top = 950;
 		}
 		if (direct != 2 && direct != 22)
 		{
 			player1.x += 160;
 			sprite_player1.setScale({ -1, 1 });
-			player1.rectSourceplayer.left = 563; //attack  default left
+			player1.rectSourceplayer.left = 563;
 		}
 		if (player1.x >= 160)
 		{
@@ -440,13 +432,13 @@ int J_attack(int direct)
 		direct = 2;
 		if (cloc.getElapsedTime().asSeconds() > 0.120f)
 		{
-			if (player1.rectSourceplayer.left == 1223) //attack  max left
+			if (player1.rectSourceplayer.left == 1223)
 			{
-				player1.rectSourceplayer.left = 563; //attack  default left
+				player1.rectSourceplayer.left = 563;
 			}
 			else
 			{
-				player1.rectSourceplayer.left += 132; //plus left
+				player1.rectSourceplayer.left += 132;
 			}
 			sprite_player1.setTextureRect(player1.rectSourceplayer);
 			cloc.restart();
