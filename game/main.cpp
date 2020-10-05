@@ -30,7 +30,7 @@ struct Vector
 	int direct = 0;
 } player , jump , PG , J;
 
-
+int combo = 0;
 
 
 
@@ -46,7 +46,7 @@ int main()
 	//player.setFillColor(sf::Color::Cyan);
 
 	
-	player1.Texture.loadFromFile("Textures/naruto.png");
+	player1.Texture.loadFromFile("Textures/11.png");
 	sprite_player1.setTexture(&player1.Texture);
 	sprite_player1.setTextureRect(player1.rectSourceplayer);
 	
@@ -62,7 +62,8 @@ int main()
 			if (event.type == sf::Event::TextEntered)
 			{
 				printf("%c\n", event.text.unicode);
-				printf("x= %f  y=%f\n", player1.x, player1.y);
+				//printf("x= %f  y=%f\n", player1.x, player1.y);
+				
 			}
 				
 		}
@@ -77,11 +78,12 @@ int main()
 }
 void statement()
 {
+	
 	sprite_player1.setTextureRect(player1.rectSourceplayer);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 	{
-	
+		combo = 0;
 		if (J.direct != 1&& PG.direct != 1)
 		{
 			player.direct = move_Left_Fuc(player.direct);
@@ -89,6 +91,7 @@ void statement()
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 	{
+		combo = 0;
 		if (J.direct != 1&& PG.direct != 1)
 		{
 			player.direct = move_Right_Fuc(player.direct);
@@ -96,6 +99,7 @@ void statement()
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::K))
 	{
+		combo = 0;
 		if (J.direct != 1&& PG.direct != 1)
 		{
 			jump.direct = 1;
@@ -103,6 +107,8 @@ void statement()
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::L))
 	{
+		
+		combo = 0;
 		if (J.direct != 1&& jump.direct != 1&& PG.direct != 1)
 		{
 			player.direct = Flash_Fuc(player.direct);
@@ -110,7 +116,7 @@ void statement()
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::J))
 	{
-		if (J.direct == 0 && jump.direct != 1 && PG.direct != 1)
+		if (J.direct == 0 && jump.direct != 1 && PG.direct != 1 &&combo<3)
 		{
 			player.direct = Stay_Fuc(player.direct);
 			J.direct = 1;
@@ -119,11 +125,13 @@ void statement()
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 	{
+		combo = 0;
 		PG_Fuc();
 		PG.direct = 1;
 	}
 	else if (J.direct != 1)
 	{
+		
 		if (PG.direct == 1)
 		{
 			player1.rectSourceplayer.left = 35; // left default
@@ -133,17 +141,18 @@ void statement()
 		player.direct = Stay_Fuc(player.direct);
 	}
 	
-
-
+	
 
 	if (J.direct == 1)
 	{
+		
 		if (clockJ.getElapsedTime().asSeconds() > 0.65f)
 		{
 			J.direct = 0;
 			clockJ.restart();
 			player1.rectSourceplayer.top = 0;  // top default
 			player.direct = Stay_Fuc(player.direct);
+			combo++;
 		}
 		else
 		{
@@ -174,6 +183,7 @@ int Stay_Fuc(int direct)
 		if (player1.rectSourceplayer.left == 431) //stay max left 
 		{
 			player1.rectSourceplayer.left = 35; //stay default left 
+			combo = 0;
 		}
 		else
 		{
@@ -182,7 +192,7 @@ int Stay_Fuc(int direct)
 		sprite_player1.setTextureRect(player1.rectSourceplayer);
 		cloc.restart();
 		
-
+		
 	}
 	return direct;
 
