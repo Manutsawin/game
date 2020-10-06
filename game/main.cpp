@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include<windows.h>
 #include<stdio.h>
+#include"HP.h"
 
 
 
@@ -31,6 +32,8 @@ int J_attack(int);
 void statement();
 void draw_pic();
 void setup();
+void hpbar(float);
+void hpbar_enamy(float);
 
 
 
@@ -41,7 +44,7 @@ struct Vector
 } player , jump , PG , J;
 
 int combo = 0;
-float damage=0;
+int damage_player=0, total_hp_playyer =23, damage_enamy = 0, total_hp_enamy = 23;
 
 
 
@@ -71,6 +74,8 @@ int main()
 		statement();
 		sprite_player1.setPosition(player1.x, player1.y);
 		draw_pic();
+		damage_player = 0;
+		damage_enamy = 0;
 	}
 	
 	return 0;
@@ -106,7 +111,7 @@ void setup()
 	hpBar_player.rectSourceplayer.width = 500;
 	hpBar_player.rectSourceplayer.height = 40;
 	
-	hpBar_player.Texture.loadFromFile("HP/1.png");
+	
 	sprite_hpBar_player.setTexture(&hpBar_player.Texture);
 	sprite_hpBar_player.setPosition(15,35);
 	sprite_hpBar_player.setTextureRect(hpBar_player.rectSourceplayer);
@@ -125,6 +130,12 @@ void setup()
 }
 void draw_pic()
 {
+	total_hp_playyer = hpcalculate(damage_player, total_hp_playyer);
+	hpbar(total_hp_playyer);
+
+	total_hp_enamy = hpcalculate(damage_enamy, total_hp_enamy);
+	hpbar_enamy(total_hp_enamy);
+
 	window.clear();
 	window.draw(sprite_BG);
 	window.draw(sprite_player1);
@@ -521,4 +532,124 @@ int J_attack(int direct)
 		return direct;
 	}
 
+}
+void hpbar(float total_hp)
+{
+	if (total_hp == 23)
+	{	hpBar_player.Texture.loadFromFile("HP/1.png");	}
+	else if (total_hp == 22)
+	{	hpBar_player.Texture.loadFromFile("HP/2.png");	}
+	else if (total_hp == 21)
+	{	hpBar_player.Texture.loadFromFile("HP/3.png");	}
+	else if (total_hp == 20)
+	{	hpBar_player.Texture.loadFromFile("HP/4.png");	}
+	else if (total_hp == 19)
+	{	hpBar_player.Texture.loadFromFile("HP/5.png");	}
+	else if (total_hp == 18)
+	{	hpBar_player.Texture.loadFromFile("HP/6.png");	}
+	else if (total_hp == 17)
+	{	hpBar_player.Texture.loadFromFile("HP/7.png");	}
+	else if (total_hp == 16)
+	{	hpBar_player.Texture.loadFromFile("HP/8.png");	}
+	else if (total_hp == 15)
+	{	hpBar_player.Texture.loadFromFile("HP/9.png");	}
+	else if (total_hp == 14)
+	{	hpBar_player.Texture.loadFromFile("HP/10.png");	}
+	else if (total_hp == 13)
+	{	hpBar_player.Texture.loadFromFile("HP/11.png");	}
+	else if (total_hp == 12)
+	{	hpBar_player.Texture.loadFromFile("HP/12.png");	}
+	else if (total_hp == 11)
+	{	hpBar_player.Texture.loadFromFile("HP/13.png");	}
+	else if (total_hp == 10)
+	{	hpBar_player.Texture.loadFromFile("HP/14.png");	}
+	else if (total_hp == 9)
+	{	hpBar_player.Texture.loadFromFile("HP/15.png");	}
+	else if (total_hp == 8)
+	{	hpBar_player.Texture.loadFromFile("HP/16.png");	}
+	else if (total_hp == 7)
+	{	hpBar_player.Texture.loadFromFile("HP/17.png");	}
+	else if (total_hp == 6)
+	{	hpBar_player.Texture.loadFromFile("HP/18.png");	}
+	else if (total_hp == 5)
+	{	hpBar_player.Texture.loadFromFile("HP/19.png");	}
+	else if (total_hp == 4)
+	{	hpBar_player.Texture.loadFromFile("HP/20.png");	}
+	else if (total_hp == 3)
+	{	hpBar_player.Texture.loadFromFile("HP/21.png");	}
+	else if (total_hp == 2)
+	{	hpBar_player.Texture.loadFromFile("HP/22.png");	}
+	else if (total_hp == 1)
+	{	hpBar_player.Texture.loadFromFile("HP/23.png");	}
+}
+void hpbar_enamy(float total_hp)
+{
+	if (total_hp == 23)
+	{		hpBar_enamy.Texture.loadFromFile("HP/1.png");	}
+	else if (total_hp == 22)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/2.png");	}
+	else if (total_hp == 21)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/3.png");	}
+	else if (total_hp == 20)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/4.png");	}
+	else if (total_hp == 19)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/5.png");	}
+	else if (total_hp == 18)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/6.png");	}
+	else if (total_hp == 17)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/7.png");	}
+	else if (total_hp == 16)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/8.png");	}
+	else if (total_hp == 15)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/9.png");	}
+	else if (total_hp == 14)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/10.png");	}
+	else if (total_hp == 13)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/11.png");	}
+	else if (total_hp == 12)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/12.png");	}
+	else if (total_hp == 11)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/13.png");	}
+	else if (total_hp == 10)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/14.png");	}
+	else if (total_hp == 9)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/15.png");	}
+	else if (total_hp == 8)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/16.png");	}
+	else if (total_hp == 7)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/17.png");	}
+	else if (total_hp == 6)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/18.png");	}
+	else if (total_hp == 5)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/19.png");	}
+	else if (total_hp == 4)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/20.png");	}
+	else if (total_hp == 3)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/21.png");	}
+	else if (total_hp == 2)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/22.png");	}
+	else if (total_hp == 1)
+	{
+		hpBar_enamy.Texture.loadFromFile("HP/23.png");	}
 }
