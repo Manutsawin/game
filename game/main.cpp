@@ -2,6 +2,8 @@
 #include<windows.h>
 #include<stdio.h>
 
+
+
 struct charecter
 {
 	float x= 0, y= 530;
@@ -9,13 +11,16 @@ struct charecter
 	sf::Texture Texture;
 	sf::IntRect rectSourceplayer;
 
-} player1;
+} player1,BG,hpBar_player,hpBar_enamy;
 
 sf::RenderWindow window(sf::VideoMode(1200, 800), "Road to champions");
+sf::RectangleShape sprite_BG(sf::Vector2f(1200.0f,800.0f));
 sf::RectangleShape sprite_player1(sf::Vector2f(160.0f, 120.0f));
+sf::RectangleShape sprite_hpBar_enamy(sf::Vector2f(500.0f, 40.0f));
+sf::RectangleShape sprite_hpBar_player(sf::Vector2f(500.0f, 40.0f));
 sf::Clock cloc, clockJ;
 
-//ichigoz
+//movement control
 int Stay_Fuc(int);
 int move_Right_Fuc(int);
 int move_Left_Fuc(int);
@@ -24,6 +29,11 @@ void PG_Fuc();
 int Flash_Fuc(int);
 int J_attack(int);
 void statement();
+void draw_pic();
+void setup();
+
+
+
 
 struct Vector
 {
@@ -31,24 +41,15 @@ struct Vector
 } player , jump , PG , J;
 
 int combo = 0;
+float damage=0;
 
 
 
 int main()
 {
-	player.direct = 1;
-
-	player1.rectSourceplayer.top = 0;
-	player1.rectSourceplayer.left = 35;
-	player1.rectSourceplayer.width = 80;
-	player1.rectSourceplayer.height = 60;
-
-	//player.setFillColor(sf::Color::Cyan);
-
 	
-	player1.Texture.loadFromFile("Textures/11.png");
-	sprite_player1.setTexture(&player1.Texture);
-	sprite_player1.setTextureRect(player1.rectSourceplayer);
+	setup();
+	
 	
 	while (window.isOpen())
 	{
@@ -68,14 +69,70 @@ int main()
 				
 		}
 		statement();
-		window.clear();
 		sprite_player1.setPosition(player1.x, player1.y);
-		window.draw(sprite_player1);
-		window.display();
+		draw_pic();
 	}
 	
 	return 0;
 }
+void setup()
+{
+	player.direct = 1;
+	//player.setFillColor(sf::Color::Cyan);
+	
+	//BG
+	BG.rectSourceplayer.top = 10;
+	BG.rectSourceplayer.left = 200;
+	BG.rectSourceplayer.width = 300;
+	BG.rectSourceplayer.height = 200;
+
+	BG.Texture.loadFromFile("Map/1.png");
+	sprite_BG.setTexture(&BG.Texture);
+	sprite_BG.setTextureRect(BG.rectSourceplayer);
+
+	//player
+	player1.rectSourceplayer.top = 0;
+	player1.rectSourceplayer.left = 35;
+	player1.rectSourceplayer.width = 80;
+	player1.rectSourceplayer.height = 60;
+
+	player1.Texture.loadFromFile("Textures/12.png");
+	sprite_player1.setTexture(&player1.Texture);
+	sprite_player1.setTextureRect(player1.rectSourceplayer);
+
+	//hp_player
+	hpBar_player.rectSourceplayer.top = 0;
+	hpBar_player.rectSourceplayer.left = 0;
+	hpBar_player.rectSourceplayer.width = 500;
+	hpBar_player.rectSourceplayer.height = 40;
+	
+	hpBar_player.Texture.loadFromFile("HP/1.png");
+	sprite_hpBar_player.setTexture(&hpBar_player.Texture);
+	sprite_hpBar_player.setPosition(15,35);
+	sprite_hpBar_player.setTextureRect(hpBar_player.rectSourceplayer);
+
+	//hp_enamy
+	hpBar_enamy.rectSourceplayer.top = 0;
+	hpBar_enamy.rectSourceplayer.left = 0;
+	hpBar_enamy.rectSourceplayer.width = 500;
+	hpBar_enamy.rectSourceplayer.height = 40;
+	sprite_hpBar_enamy.setScale({ -1, 1 });
+
+	hpBar_enamy.Texture.loadFromFile("HP/1.png");
+	sprite_hpBar_enamy.setTexture(&hpBar_enamy.Texture);
+	sprite_hpBar_enamy.setPosition(1185, 35);
+	sprite_hpBar_enamy.setTextureRect(hpBar_enamy.rectSourceplayer);
+}
+void draw_pic()
+{
+	window.clear();
+	window.draw(sprite_BG);
+	window.draw(sprite_player1);
+	window.draw(sprite_hpBar_player);
+	window.draw(sprite_hpBar_enamy);
+	window.display();
+}
+
 void statement()
 {
 	
